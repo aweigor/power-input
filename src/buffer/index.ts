@@ -6,12 +6,14 @@
 
 import { ICircularBuffer } from './buffer.interfaces';
 
+export type { ICircularBuffer };
+
 enum props { N = 10 };
 
 export function createBuffer<ItemType = void>(): ICircularBuffer<ItemType>  {
-  let buffer = [];
-  let writeIdx = 0;
-  let readIdx = 0;
+  let buffer: ItemType[] = [];
+  let writeIdx: number = 0;
+  let readIdx: number = 0;
 
   const context: ICircularBuffer<ItemType> = { put, get, value: null };
 

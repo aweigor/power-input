@@ -1,3 +1,9 @@
+import {
+  ICircularBuffer,
+  createBuffer
+} from './buffer';
+
+
 type TEventBusHandler = {
   id?: string;
   callback: (...args: any[]) => void;
@@ -34,7 +40,6 @@ class EventBus {
 
 const eventEmitter = new EventBus();
 
-class EventBuffer {}
 
 class EventBufferEntry {
   element?: HTMLElement;
@@ -105,6 +110,42 @@ class EventBufferInputEntry extends EventBufferEntry {
   }
 }
 
+type StreamItem<StreamType> = {
+  timestamp: number,
+  data: StreamType
+}
+
+class Stream<DataType> {
+  buffer: ICircularBuffer<StreamItem<DataType>>;
+  constructor() {
+    this.buffer = createBuffer<StreamItem<DataType>>();
+  }
+  flush(): DataType[] {
+    let result: DataType[] = [];
+    while (this.buffer.get().value !== null)
+      result.push(this.buffer.value as DataType);
+    return result;
+  }
+}
+
+class WritableStream<DataType> extends Stream<DataType> {
+  write(data: DataType, timestamp :number): DataType[] {
+    const item: StreamItem<DataType> = { data, timestamp };
+    if (this.buffer.put(item).value === null) {
+      return this.flush();
+    }
+    return [data];
+  }
+}
+
+class ReadableStream<DataType> extends Stream<DataType> {
+  read() {
+    // not implemented
+  }
+}
+
+const selectionStream = new WritableStream<EventBufferSelectionEntry>()
+
 class PowerInput extends HTMLElement {
   $el?: HTMLDivElement;
   $events: EventBus;
@@ -126,7 +167,7 @@ class PowerInput extends HTMLElement {
     return el;
   }
   onSelectionChanged(event) {
-    console.log(EventBufferSelectionEntry.create(event));
+    selectionStream.write(EventBufferSelectionEntry.create(event), event.timestamp);
   }
   attachInputElement() {
     if (!this.$el) return;
