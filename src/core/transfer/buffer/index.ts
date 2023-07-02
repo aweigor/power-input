@@ -4,7 +4,7 @@
  * 
 */
 
-import { ICircularBuffer } from './buffer.interfaces';
+import { ICircularBuffer } from '../../../interfaces';
 
 export type { ICircularBuffer };
 
@@ -22,6 +22,8 @@ export function createBuffer<ItemType = void>(): ICircularBuffer<ItemType>  {
       // overflow
       return context;
     }
+
+    console.log('test', (writeIdx + 1) % props.N === readIdx)
     
     buffer[writeIdx] = item;
     writeIdx = (writeIdx + 1) % props.N;
