@@ -24,19 +24,23 @@ const $subscribe = eventBus.subscribe;
 */
 const stream = new WritableStream();
 
+
+
+
 class PowerInput extends HTMLElement {
   el?: HTMLDivElement;
   selection: Selection | null = null;
   constructor() {
     super();
-    this.el = this.createInputElement();
-    this.attachInputElement(this.el);
+
+
+
+    //this.el = this.createInputElement();
+    //this.attachInputElement(this.el);
   }
   createInputElement(): HTMLDivElement {
     const el = document.createElement('div');
-
-    el.setAttribute("contenteditable", "true" );
-    el.setAttribute("tabIndex", "0" );
+    
 
     return el;
   }
@@ -46,8 +50,6 @@ class PowerInput extends HTMLElement {
     console.log(selectionDto, stream.buffer);
   }
   attachInputElement(el: HTMLElement) {
-    if (!el) return;
-
     this.appendChild(el);
     
     const selection = window.getSelection();
