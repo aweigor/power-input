@@ -1,22 +1,21 @@
+import { KbinEvent } from './kbin.entity';
+
 /**
  * keyboard input event dto
  * serializer for kbin event
  * 
  */
 
-export class kbinEventDto {
-	selection: any = {};
-	timestamp: number = 0;
-	code: number = 0;
-	construcor() {}
-	decode(number) {
-		return {
-			selection: {},
-			timestamp: 0,
-			code: 0
-		}
+export class KbinEventDto {
+	get originalEvent(): any {
+		return this._event;
 	}
-	serialize(): number {
-		return 1;
+	constructor(private readonly _event: any) {}
+	serialize(): KbinEvent {
+		const e = new KbinEvent()
+		e.code = 0;
+		e.selection = {};
+		e.timestamp = 0;
+		return e;
 	}
 }

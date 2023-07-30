@@ -2,70 +2,57 @@ import {
   TSelectionChangeEventParameters
 } from './types';
 
-import {
-  SelectionEventDto
-} from './core/transfer/dto/selectionEvent.dto';
+function createInput(dispatcher: EventDispatcher) {
+  const el = document.createElement('div');
+  const ch = document.createElement('div');
 
-import { EventBus } from './services/eventBus.service';
-import { WritableStream } from './core/transfer/stream';
+  el.appendChild(ch);
+  
+  ch.setAttribute("style", "background: red; ");
+  ch.setAttribute("contenteditable", "true");
+  ch.setAttribute("tabIndex", "0");
 
-/**
- * EventBus initialization
- * at the time it is there
-*/
-const eventBus = new EventBus();
-const $emit = eventBus.emit;
-const $subscribe = eventBus.subscribe;
+  dispatcher.attachListener(ch);
 
+  return el;
+}
 
-/**
- * Streams initialization
- * at the thist time it is there
-*/
-const stream = new WritableStream();
+class EventDispatcher {
+  constructor(private readonly _handler: (event: KeyboardEvent) => any) {}
+  attachListener(el: HTMLElement) {
+    el.addEventListener('keydown', (event) => {
+      event.stopImmediatePropagation();
+      event.stopPropagation();
+      event.preventDefault();
+  
+      this._handler(event);
+  
+    }, { capture: true });
+  }
+}
 
-
+class SelectionListener {
+  selection: Selection | null = window?.getSelection() || null;
+  constructor() {
+    document.addEventListener('selectionchange', (event) => {
+      console.log('selection is changed', this.selection);
+    })
+  }
+}
 
 
 class PowerInput extends HTMLElement {
-  el?: HTMLDivElement;
-  selection: Selection | null = null;
+  el: HTMLDivElement = createInput(new EventDispatcher(this.handleInput.bind(this)));
+  selection = new SelectionListener();
   constructor() {
     super();
-
-
-
-    //this.el = this.createInputElement();
-    //this.attachInputElement(this.el);
+    this.init();
   }
-  createInputElement(): HTMLDivElement {
-    const el = document.createElement('div');
-    
-
-    return el;
+  init() {
+    document.body.appendChild(this.el);
   }
-  onSelectionChanged(event: CustomEvent<TSelectionChangeEventParameters>) {
-    const selectionDto = SelectionEventDto.getDto(event, this.el as HTMLElement, this.selection as Selection);
-    stream.write(selectionDto, Date.now());
-    console.log(selectionDto, stream.buffer);
-  }
-  attachInputElement(el: HTMLElement) {
-    this.appendChild(el);
-    
-    const selection = window.getSelection();
-    const range = document.createRange();
-    range.setStart(el, 0);
-    range.setEnd(el, 0 );
-    selection?.addRange(range);
-
-    this.selection = selection;
-
-    document.addEventListener('selectionchange', (event) => {
-      this.onSelectionChanged
-        .bind(this, event as CustomEvent<TSelectionChangeEventParameters>);
-    })
-
-    $emit('element-attached', el);
+  handleInput(event: KeyboardEvent) {
+    console.log('input handled', event, this.selection);
   }
 }
 
