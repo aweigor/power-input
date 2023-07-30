@@ -51,17 +51,42 @@ function getStreamSource(buffer: ICircularBuffer<TKeyboardInputEvent>): Underlyi
 	}
 }
 
+class KeyboardInputSink extends WritableStream {
+	constructor() {
+		super({
+			// Implement the sink
+			write(chunk) {
+				return new Promise((resolve, reject) => {
+					console.log('chunk', chunk);
+					resolve();
+				});
+			},
+			close() {
+			},
+			abort(err) {
+				console.error("Sink error:", err);
+			}
+		});
+	}
+}
+
 export class KeyboardInputStreambuf implements IBasicStreambuf<TKeyboardInputEvent, KeyboardInputStream> {
 	buffer = createBuffer<TKeyboardInputEvent>();
 	stream: KeyboardInputStream;
 	constructor() {
+		const encoder = new EventEncoder()
 		this.stream = new KeyboardInputStream(getStreamSource(this.buffer));
-		
+		this.stream = this.pipe(encoder);
+		this.stream.pipeTo(new KeyboardInputSink());
 	};
 	push(value: TKeyboardInputEvent) {
 		this.buffer.put(value);
 	};
 	pipe(ts: TransformStream) {
-		this.stream.pipeThrough(ts);
+		return this.stream.pipeThrough(ts, {
+			preventClose: true,
+			preventAbort: true,
+			preventCancel: true
+		});
 	};
 }
