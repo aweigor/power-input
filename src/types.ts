@@ -21,3 +21,9 @@ export type TSerializedSelectionObject = {
   text?: string;
   focus?: boolean;
 }
+
+export type TKeyboardInputEvent = {
+	selection: TSerializedSelectionObject,
+	timestamp: number,
+	code: string
+}

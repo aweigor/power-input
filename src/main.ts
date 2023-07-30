@@ -1,8 +1,7 @@
-import { KeyboardInputEvent } from './core/events/keyboard.input.event';
+import { createKeyboardInputEvent } from './core/events/keyboard.input.event';
 import { SelectionEventDto } from './core/transfer/dto/selectionEvent.dto';
-import {
-  TSelectionChangeEventParameters
-} from './types';
+import { KeyboardInputStreambuf } from './core/transfer/kbin.transfer.service';
+import {} from './types';
 
 function createInput(dispatcher: EventDispatcher) {
   const el = document.createElement('div');
@@ -53,6 +52,7 @@ class SelectionListener {
 class PowerInput extends HTMLElement {
   el: HTMLDivElement = createInput(new EventDispatcher(this.handleInput.bind(this)));
   selection = new SelectionListener(this.el);
+  streambuf = new KeyboardInputStreambuf();
   constructor() {
     super();
     this.init();
@@ -62,8 +62,8 @@ class PowerInput extends HTMLElement {
   }
   handleInput(event: KeyboardEvent) {
     
-    const myKeyboardEvent = new KeyboardInputEvent(this.selection.value, event);
-    
+    const e = createKeyboardInputEvent(this.selection.value, event);
+    this.streambuf.push(e);
 
     console.log('input handled', event, this.selection);
   }

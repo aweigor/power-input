@@ -1,5 +1,6 @@
 import { 
-  TSerializedSelectionObject
+  TSerializedSelectionObject,
+	TKeyboardInputEvent
 } from '../../types';
 
 /**
@@ -15,8 +16,19 @@ import {
  * 
 */
 
+export function createKeyboardInputEvent(
+	_selection: TSerializedSelectionObject, 
+	_originalEvent: KeyboardEvent
+): TKeyboardInputEvent {
+	return {
+		selection: JSON.parse(JSON.stringify(_selection)), // make copy?
+		timestamp: _originalEvent.timeStamp,
+		code: _originalEvent.code,
+	}
+}
+
 export class KeyboardInputEvent {
-	get value() {
+	get value(): TKeyboardInputEvent {
 		return {
 			selection: JSON.parse(JSON.stringify(this._selection)), // make copy?
 			timestamp: this._originalEvent.timeStamp,
