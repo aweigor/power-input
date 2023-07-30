@@ -1,3 +1,4 @@
+import { KeyboardInputEvent } from './core/events/keyboard.input.event';
 import { SelectionEventDto } from './core/transfer/dto/selectionEvent.dto';
 import {
   TSelectionChangeEventParameters
@@ -60,6 +61,10 @@ class PowerInput extends HTMLElement {
     document.body.appendChild(this.el);
   }
   handleInput(event: KeyboardEvent) {
+    
+    const myKeyboardEvent = new KeyboardInputEvent(this.selection.value, event);
+    
+
     console.log('input handled', event, this.selection);
   }
 }

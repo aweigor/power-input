@@ -12,7 +12,7 @@ export type TSelectionChangeEventParameters = {
   parentElement: HTMLElement
 }
 
-export type TSelectionEventObject = {
+export type TSerializedSelectionObject = {
   focusOffset: any;
   anchorOffset: any;
   focusLine: any;
