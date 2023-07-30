@@ -61,11 +61,9 @@ class PowerInput extends HTMLElement {
     document.body.appendChild(this.el);
   }
   handleInput(event: KeyboardEvent) {
-    
-    const e = createKeyboardInputEvent(this.selection.value, event);
-    this.streambuf.push(e);
-
-    console.log('input handled', event, this.selection);
+    this.streambuf.push(
+      createKeyboardInputEvent(this.selection.value, event)
+    );
   }
 }
 

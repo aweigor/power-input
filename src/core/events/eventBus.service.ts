@@ -1,6 +1,6 @@
 import {
   TEventBusHandler
-} from '../types';
+} from '../../types';
 
 export class EventBus {
   listeners: Map<string, TEventBusHandler[]> = new Map();

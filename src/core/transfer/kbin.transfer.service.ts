@@ -55,7 +55,8 @@ export class KeyboardInputStreambuf implements IBasicStreambuf<TKeyboardInputEve
 	buffer = createBuffer<TKeyboardInputEvent>();
 	stream: KeyboardInputStream;
 	constructor() {
-		this.stream = new KeyboardInputStream(getStreamSource(this.buffer))
+		this.stream = new KeyboardInputStream(getStreamSource(this.buffer));
+		
 	};
 	push(value: TKeyboardInputEvent) {
 		this.buffer.put(value);
