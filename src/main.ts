@@ -1,3 +1,4 @@
+import { SelectionEventDto } from './core/transfer/dto/selectionEvent.dto';
 import {
   TSelectionChangeEventParameters
 } from './types';
@@ -33,9 +34,16 @@ class EventDispatcher {
 
 class SelectionListener {
   selection: Selection | null = window?.getSelection() || null;
-  constructor() {
+  value: SelectionEventDto;
+  constructor(private readonly _el: HTMLDivElement) {
+    this.init();
+  }
+  init() {
     document.addEventListener('selectionchange', (event) => {
-      console.log('selection is changed', this.selection);
+      if (this.selection !== null) {
+        this.value = new SelectionEventDto(this._el, this.selection);
+      } 
+      console.log('selection is changed', event, this.value);
     })
   }
 }
@@ -43,7 +51,7 @@ class SelectionListener {
 
 class PowerInput extends HTMLElement {
   el: HTMLDivElement = createInput(new EventDispatcher(this.handleInput.bind(this)));
-  selection = new SelectionListener();
+  selection = new SelectionListener(this.el);
   constructor() {
     super();
     this.init();
