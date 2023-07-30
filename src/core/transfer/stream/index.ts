@@ -1,6 +1,6 @@
-import { ICircularBuffer } from '../../../interfaces';
+import { ICircularBuffer } from '../buffer/circular.buffer.interface';
 import { TStreamItem } from '../../../types';
-import { createBuffer } from '../buffer'
+import { createBuffer } from '../buffer/circular.buffer.'
 
 export class Stream<DataType> {
   buffer: ICircularBuffer<TStreamItem<DataType>>;

@@ -1,4 +1,4 @@
-import { ICircularBuffer } from '../buffer';
+import { ICircularBuffer } from '../buffer/circular.buffer.';
 
 export interface IBasicStreambuf<T, K extends ReadableStream> {
 	buffer: ICircularBuffer<T>;

@@ -1,18 +1,18 @@
 import { 
   TSelectionChangeEventParameters,
-  TSelectionEventObject
+  TSerializedSelectionObject
 } from '../../../types';
 
 export class SelectionEventDto {
   element?: HTMLElement;
   paragraphs?: string[];
-  focusOffset: TSelectionEventObject['focusOffset'];
-  anchorOffset: TSelectionEventObject['anchorOffset'];
-  focusLine: TSelectionEventObject['focusLine'];
-  anchorLine: TSelectionEventObject['anchorLine'];
-  lines: TSelectionEventObject['lines'];
-  text?: TSelectionEventObject['text'];
-  focus?: TSelectionEventObject['focus'];
+  focusOffset: TSerializedSelectionObject['focusOffset'];
+  anchorOffset: TSerializedSelectionObject['anchorOffset'];
+  focusLine: TSerializedSelectionObject['focusLine'];
+  anchorLine: TSerializedSelectionObject['anchorLine'];
+  lines: TSerializedSelectionObject['lines'];
+  text?: TSerializedSelectionObject['text'];
+  focus?: TSerializedSelectionObject['focus'];
 
   constructor(element: HTMLDivElement, selection: Selection) {
     this.element = element;
@@ -26,7 +26,7 @@ export class SelectionEventDto {
     this.focus = this.isDescendant(element, selection.focusNode);
   }
   
-  get value(): TSelectionEventObject {
+  get value(): TSerializedSelectionObject {
     return {
       focusOffset: this.focusOffset,
       anchorOffset: this.anchorOffset,

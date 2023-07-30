@@ -4,7 +4,7 @@
  * 
 */
 
-import { ICircularBuffer } from '../../../interfaces';
+import { ICircularBuffer } from './circular.buffer.interface';
 
 export type { ICircularBuffer };
 
