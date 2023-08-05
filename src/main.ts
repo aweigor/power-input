@@ -1,9 +1,10 @@
-import { createKeyboardInputEvent } from './core/events/keyboard.input.event';
+import { KeyboardInputEvent, createKeyboardInputEvent } from './core/events/keyboard.input.event';
 import { SelectionEventDto } from './core/transfer/dto/selectionEvent.dto';
 import { KeyboardInputStreambuf } from './core/transfer/kbin.transfer.service';
+import { Speller } from './core/transform/speller';
 import {} from './types';
 
-function createInput(dispatcher: EventDispatcher) {
+function createElement(dispatcher: EventDispatcher) {
   const el = document.createElement('div');
   const ch = document.createElement('div');
 
@@ -33,7 +34,9 @@ class EventDispatcher {
 }
 
 class SelectionListener {
-  selection: Selection | null = window?.getSelection() || null;
+  get selection() {
+    return window?.getSelection();
+  };
   value: SelectionEventDto;
   constructor(private readonly _el: HTMLDivElement) {
     this.init();
@@ -50,7 +53,7 @@ class SelectionListener {
 
 
 class PowerInput extends HTMLElement {
-  el: HTMLDivElement = createInput(new EventDispatcher(this.handleInput.bind(this)));
+  el: HTMLDivElement = createElement(new EventDispatcher(this.handleInput.bind(this)));
   selection = new SelectionListener(this.el);
   streambuf = new KeyboardInputStreambuf();
   constructor() {
@@ -59,10 +62,11 @@ class PowerInput extends HTMLElement {
   }
   init() {
     document.body.appendChild(this.el);
+    this.streambuf.pipe(new Speller());
   }
   handleInput(event: KeyboardEvent) {
     this.streambuf.push(
-      createKeyboardInputEvent(this.selection.value, event)
+      new KeyboardInputEvent(this.selection.value, event)
     );
   }
 }

@@ -25,5 +25,5 @@ export type TSerializedSelectionObject = {
 export type TKeyboardInputEvent = {
 	selection: TSerializedSelectionObject,
 	timestamp: number,
-	code: string
+	code: number
 }

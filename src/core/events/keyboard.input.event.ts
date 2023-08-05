@@ -2,6 +2,7 @@ import {
   TSerializedSelectionObject,
 	TKeyboardInputEvent
 } from '../../types';
+import { SelectionEventDto } from '../transfer/dto/selectionEvent.dto';
 
 /**
  * Keyboard input event
@@ -23,20 +24,29 @@ export function createKeyboardInputEvent(
 	return {
 		selection: JSON.parse(JSON.stringify(_selection)), // make copy?
 		timestamp: _originalEvent.timeStamp,
-		code: _originalEvent.code,
+		code: _originalEvent.charCode,
 	}
 }
 
 export class KeyboardInputEvent {
+	selection: TSerializedSelectionObject;
+	timestamp: number;
+	code: number;
+	shift: boolean;
 	get value(): TKeyboardInputEvent {
 		return {
 			selection: JSON.parse(JSON.stringify(this._selection)), // make copy?
 			timestamp: this._originalEvent.timeStamp,
-			code: this._originalEvent.code,
+			code: this._originalEvent.charCode,
 		}
 	}
 	constructor(
-		private readonly _selection: TSerializedSelectionObject, 
+		private readonly _selection: SelectionEventDto, 
 		private readonly _originalEvent: KeyboardEvent
-	) {}
+	) {
+		this.selection = _selection.serialize();
+		this.timestamp = _originalEvent.timeStamp;
+		this.shift = _originalEvent.shiftKey;
+		this.code = this._originalEvent.charCode; // deprecated
+	}
 }

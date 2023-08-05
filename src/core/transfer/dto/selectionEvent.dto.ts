@@ -25,8 +25,8 @@ export class SelectionEventDto {
     this.text = element.innerText;
     this.focus = this.isDescendant(element, selection.focusNode);
   }
-  
-  get value(): TSerializedSelectionObject {
+
+  serialize() {
     return {
       focusOffset: this.focusOffset,
       anchorOffset: this.anchorOffset,
