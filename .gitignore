@@ -1,6 +1,5 @@
+.env
+.DS_Store
 node_modules
-dist/*
-tests/*
-public/vendor/*
-src/temp.ts
-tests/*
+dist
+npm-debug.log
