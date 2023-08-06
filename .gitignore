@@ -4,4 +4,3 @@ tests/*
 public/vendor/*
 src/temp.ts
 tests/*
-package-lock.json
