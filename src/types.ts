@@ -12,7 +12,7 @@ export type TSelectionChangeEventParameters = {
 	parentElement: HTMLElement;
 };
 
-export type TSerializedSelectionObject = {
+export type TSelectionState = {
 	focusOffset: any;
 	anchorOffset: any;
 	focusLine: any;
@@ -23,7 +23,11 @@ export type TSerializedSelectionObject = {
 };
 
 export type TKeyboardInputEvent = {
-	selection: TSerializedSelectionObject;
 	timestamp: number;
 	code: number;
+};
+
+export type TInputState = {
+	value?: string;
+	selection?: TSelectionState;
 };

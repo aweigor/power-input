@@ -1,5 +1,5 @@
 import { KeyboardInputEvent, createKeyboardInputEvent } from './core/events/keyboard.input.event';
-import { SelectionEventDto } from './core/transfer/dto/selectionEvent.dto';
+import { SelectionEventDto } from './core/selection/selection.dto';
 import { KeyboardInputStreambuf } from './core/transfer/kbin.transfer.service';
 import { Speller } from './core/transform/speller';
 import { VirtualInput } from './core/vinput/virtual.input';
@@ -38,28 +38,9 @@ class EventDispatcher {
 	}
 }
 
-class SelectionListener {
-	get selection() {
-		return window?.getSelection();
-	}
-	value: SelectionEventDto;
-	constructor(private readonly _el: HTMLDivElement) {
-		this.init();
-	}
-	init() {
-		document.addEventListener('selectionchange', (event) => {
-			if (this.selection !== null) {
-				this.value = new SelectionEventDto(this._el, this.selection);
-			}
-			console.log('selection is changed', event, this.value);
-		});
-	}
-}
-
 class PowerInput extends HTMLElement {
 	element: HTMLDivElement = createElement(new EventDispatcher(this.handleInput.bind(this)));
 	virtualInput: IVirtualInput = new VirtualInput();
-	selection = new SelectionListener(this.element);
 	streambuf = new KeyboardInputStreambuf();
 	constructor() {
 		super();
@@ -70,7 +51,7 @@ class PowerInput extends HTMLElement {
 		this.streambuf.pipe(new Speller());
 	}
 	handleInput(event: KeyboardEvent) {
-		this.streambuf.push(new KeyboardInputEvent(this.selection.value, event));
+		this.streambuf.push(new KeyboardInputEvent(event));
 	}
 }
 

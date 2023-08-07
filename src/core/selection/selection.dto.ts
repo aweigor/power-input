@@ -1,17 +1,17 @@
-import { TSelectionChangeEventParameters, TSerializedSelectionObject } from '../../../types';
+import { TSelectionState } from '../../types';
 
-export class SelectionEventDto {
+export class SelectionStateDto {
 	element?: HTMLElement;
 	paragraphs?: string[];
-	focusOffset: TSerializedSelectionObject['focusOffset'];
-	anchorOffset: TSerializedSelectionObject['anchorOffset'];
-	focusLine: TSerializedSelectionObject['focusLine'];
-	anchorLine: TSerializedSelectionObject['anchorLine'];
-	lines: TSerializedSelectionObject['lines'];
-	text?: TSerializedSelectionObject['text'];
-	focus?: TSerializedSelectionObject['focus'];
+	focusOffset: TSelectionState['focusOffset'];
+	anchorOffset: TSelectionState['anchorOffset'];
+	focusLine: TSelectionState['focusLine'];
+	anchorLine: TSelectionState['anchorLine'];
+	lines: TSelectionState['lines'];
+	text?: TSelectionState['text'];
+	focus?: TSelectionState['focus'];
 
-	constructor(element: HTMLDivElement, selection: Selection) {
+	constructor(element: HTMLElement, selection: Selection) {
 		this.element = element;
 		this.paragraphs = element.innerText.split('\n\n');
 		this.focusOffset = selection.focusOffset;
@@ -23,7 +23,7 @@ export class SelectionEventDto {
 		this.focus = this.isDescendant(element, selection.focusNode);
 	}
 
-	serialize() {
+	serialize(): TSelectionState {
 		return {
 			focusOffset: this.focusOffset,
 			anchorOffset: this.anchorOffset,
@@ -35,25 +35,25 @@ export class SelectionEventDto {
 		};
 	}
 
-	getFocusLine(selection: Selection) {
+	getFocusLine(selection: Selection): number | null {
 		if (!selection.focusNode) return null;
 		return this.indexOf(selection.focusNode.parentElement);
 	}
 
-	getAnchorLine(selection: Selection) {
+	getAnchorLine(selection: Selection): number | null {
 		if (!selection.anchorNode) return null;
 		return this.indexOf(selection.anchorNode.parentElement);
 	}
 
-	indexOf(elt: HTMLElement | null) {
+	indexOf(elt: HTMLElement | null): number {
 		if (elt === null) return -1;
 		return Array.from(elt.children).indexOf(elt);
 	}
 
-	isDescendant(parent, child) {
+	isDescendant(parent, child): boolean {
 		let node = child;
 
-		while (node) {
+		while (node !== null) {
 			if (node == parent) return true;
 			node = node.parentNode;
 		}
