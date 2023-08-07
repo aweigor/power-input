@@ -2,6 +2,8 @@ import { KeyboardInputEvent, createKeyboardInputEvent } from './core/events/keyb
 import { SelectionEventDto } from './core/transfer/dto/selectionEvent.dto';
 import { KeyboardInputStreambuf } from './core/transfer/kbin.transfer.service';
 import { Speller } from './core/transform/speller';
+import { VirtualInput } from './core/vinput/virtual.input';
+import { IVirtualInput } from './core/vinput/virtual.input.interface';
 import {} from './types';
 
 function createElement(dispatcher: EventDispatcher) {
@@ -55,15 +57,16 @@ class SelectionListener {
 }
 
 class PowerInput extends HTMLElement {
-	el: HTMLDivElement = createElement(new EventDispatcher(this.handleInput.bind(this)));
-	selection = new SelectionListener(this.el);
+	element: HTMLDivElement = createElement(new EventDispatcher(this.handleInput.bind(this)));
+	virtualInput: IVirtualInput = new VirtualInput();
+	selection = new SelectionListener(this.element);
 	streambuf = new KeyboardInputStreambuf();
 	constructor() {
 		super();
 		this.init();
 	}
 	init() {
-		document.body.appendChild(this.el);
+		document.body.appendChild(this.element);
 		this.streambuf.pipe(new Speller());
 	}
 	handleInput(event: KeyboardEvent) {

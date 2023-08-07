@@ -1,7 +1,7 @@
 import { TKeyboardInputEvent } from '../../types';
 import { ICircularBuffer } from './buffer/circular.buffer.interface';
 import { createBuffer } from './buffer/circular.buffer';
-import { IBasicStreambuf } from '../../interfaces/StreamBuffer.interface';
+import { IBasicStreambuf } from './StreamBuffer.interface';
 
 export class KeyboardInputStream extends ReadableStream<TKeyboardInputEvent> {
 	constructor(underlyingSource: UnderlyingDefaultSource) {
