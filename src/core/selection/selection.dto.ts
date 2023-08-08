@@ -1,4 +1,5 @@
 import { TSelectionState } from '../../types';
+import { isDescendantNode } from '../../utils/common';
 
 export class SelectionStateDto {
 	element?: HTMLElement;
@@ -20,7 +21,7 @@ export class SelectionStateDto {
 		this.anchorLine = this.getAnchorLine(selection);
 		this.lines = this.paragraphs.reduce((acc, el) => el.split('\n').length + acc, 0);
 		this.text = element.innerText;
-		this.focus = this.isDescendant(element, selection.focusNode);
+		this.focus = isDescendantNode(element, selection.focusNode);
 	}
 
 	serialize(): TSelectionState {
@@ -48,16 +49,5 @@ export class SelectionStateDto {
 	indexOf(elt: HTMLElement | null): number {
 		if (elt === null) return -1;
 		return Array.from(elt.children).indexOf(elt);
-	}
-
-	isDescendant(parent, child): boolean {
-		let node = child;
-
-		while (node !== null) {
-			if (node == parent) return true;
-			node = node.parentNode;
-		}
-
-		return false;
 	}
 }
