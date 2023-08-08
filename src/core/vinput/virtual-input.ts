@@ -1,7 +1,7 @@
 import { TInputState, TSelectionState } from '../../types';
 import { SelectionListener } from '../selection/selection.listener';
-import { Letter } from '../transform/letter.entity';
-import { IVirtualInput } from './virtual.input.interface';
+import { Letter } from './letter.entity';
+import { IVirtualInput } from './virtual-input.interface';
 
 class Line {
 	head: Letter | null = null;

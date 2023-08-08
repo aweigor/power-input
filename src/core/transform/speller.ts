@@ -5,7 +5,7 @@
  */
 
 import { KeyboardInputEvent } from '../events/keyboard.input.event';
-import { Letter } from './letter.entity';
+import { Letter } from '../vinput/letter.entity';
 
 export class Speller extends TransformStream {
 	eventEncoder: () => void;

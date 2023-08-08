@@ -18,7 +18,7 @@
  */
 
 import { TInputState } from '../../types';
-import { Letter } from '../transform/letter.entity';
+import { Letter } from './letter.entity';
 
 export interface IVirtualInput {
 	data: Letter[];

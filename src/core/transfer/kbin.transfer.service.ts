@@ -2,6 +2,7 @@ import { TKeyboardInputEvent } from '../../types';
 import { ICircularBuffer } from './buffer/circular.buffer.interface';
 import { createBuffer } from './buffer/circular.buffer';
 import { IBasicStreambuf } from './StreamBuffer.interface';
+import { Speller } from '../transform/speller';
 
 export class KeyboardInputStream extends ReadableStream<TKeyboardInputEvent> {
 	constructor(underlyingSource: UnderlyingDefaultSource) {
@@ -74,20 +75,22 @@ export class KeyboardInputStreambuf
 {
 	buffer = createBuffer<TKeyboardInputEvent>();
 	stream: KeyboardInputStream;
-	constructor() {
-		const encoder = new EventEncoder();
+	constructor(transformers: TransformStream[] = []) {
 		this.stream = new KeyboardInputStream(getStreamSource(this.buffer));
-		this.stream = this.pipe(encoder);
+		this.pipe(new EventEncoder());
+		transformers.forEach((ts) => this.pipe(ts));
 		this.stream.pipeTo(new KeyboardInputSink());
 	}
 	push(value: TKeyboardInputEvent) {
 		this.buffer.put(value);
 	}
-	pipe(ts: TransformStream) {
-		return this.stream.pipeThrough(ts, {
+	pipe(ts: TransformStream): KeyboardInputStreambuf {
+		this.stream = this.stream.pipeThrough(ts, {
 			preventClose: true,
 			preventAbort: true,
 			preventCancel: true,
 		});
+
+		return this;
 	}
 }

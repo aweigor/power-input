@@ -1,8 +1,9 @@
 import { KeyboardInputEvent } from './core/events/keyboard.input.event';
 import { KeyboardInputStreambuf } from './core/transfer/kbin.transfer.service';
 import { Speller } from './core/transform/speller';
-import { VirtualInput } from './core/vinput/virtual.input';
-import { IVirtualInput } from './core/vinput/virtual.input.interface';
+import { Typographer } from './core/transform/typographer';
+import { VirtualInput } from './core/vinput/virtual-input';
+import { IVirtualInput } from './core/vinput/virtual-input.interface';
 import {} from './types';
 
 function createElement(dispatcher: EventDispatcher): HTMLDivElement {
@@ -39,7 +40,7 @@ class EventDispatcher {
 class PowerInput extends HTMLElement {
 	element: HTMLDivElement = createElement(new EventDispatcher(this.handleInput.bind(this)));
 	virtualInput: IVirtualInput = new VirtualInput();
-	streambuf = new KeyboardInputStreambuf();
+	streambuf = new KeyboardInputStreambuf([new Speller(), new Typographer(this.virtualInput)]);
 	constructor() {
 		super();
 		this.init();
@@ -47,7 +48,6 @@ class PowerInput extends HTMLElement {
 	init(): void {
 		this.virtualInput.bindElement(this.element);
 		document.body.appendChild(this.element);
-		//this.streambuf.pipe(new Speller());
 	}
 	handleInput(event: KeyboardEvent): void {
 		this.streambuf.push(new KeyboardInputEvent(event));
