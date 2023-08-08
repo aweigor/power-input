@@ -4,12 +4,9 @@ import { TKeyboardInputEvent } from '../../types';
  * Keyboard input event
  * In order to provide ability to transform (decode) keyboard events to input state,
  * the event must contain:
- * 1. Information about selection:
- * 	- current position of carret in focused element, basically
- * 	- selection range of text
- * 2. Code of original KeyboardEvent
- * 3. Information about control keys pressed
- * 4. Time, when event was fired
+ * 1. Code of original KeyboardEvent
+ * 2. Information about control keys pressed
+ * 3. Timestamp of event was fired
  *
  */
 
