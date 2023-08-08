@@ -1,6 +1,6 @@
 export type TEventBusHandler = {
 	id?: string;
-	callback: (...args: any[]) => void;
+	callback: (...args: unknown[]) => void;
 };
 
 export type TStreamItem<StreamType> = {
@@ -13,13 +13,13 @@ export type TSelectionChangeEventParameters = {
 };
 
 export type TSelectionState = {
-	focusOffset: any;
-	anchorOffset: any;
-	focusLine: any;
-	anchorLine: any;
-	lines: any;
-	text?: string;
-	focus?: boolean;
+	focusOffset: number;
+	anchorOffset: number;
+	focusLine: number;
+	anchorLine: number;
+	linesCount: number;
+	nodeText: string;
+	selectionType: string;
 };
 
 export type TKeyboardInputEvent = {

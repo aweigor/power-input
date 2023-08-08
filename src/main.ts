@@ -1,12 +1,11 @@
-import { KeyboardInputEvent, createKeyboardInputEvent } from './core/events/keyboard.input.event';
-import { SelectionEventDto } from './core/selection/selection.dto';
+import { KeyboardInputEvent } from './core/events/keyboard.input.event';
 import { KeyboardInputStreambuf } from './core/transfer/kbin.transfer.service';
 import { Speller } from './core/transform/speller';
 import { VirtualInput } from './core/vinput/virtual.input';
 import { IVirtualInput } from './core/vinput/virtual.input.interface';
 import {} from './types';
 
-function createElement(dispatcher: EventDispatcher) {
+function createElement(dispatcher: EventDispatcher): HTMLDivElement {
 	const el = document.createElement('div');
 	const ch = document.createElement('div');
 
@@ -18,16 +17,15 @@ function createElement(dispatcher: EventDispatcher) {
 
 	dispatcher.attachListener(ch);
 
-	return el;
+	return ch;
 }
 
 class EventDispatcher {
-	constructor(private readonly _handler: (event: KeyboardEvent) => any) {}
-	attachListener(el: HTMLElement) {
+	constructor(private readonly _handler: (event: KeyboardEvent) => unknown) {}
+	attachListener(el: HTMLElement): void {
 		el.addEventListener(
 			'keydown',
 			(event) => {
-				event.stopImmediatePropagation();
 				event.stopPropagation();
 				event.preventDefault();
 
@@ -46,11 +44,12 @@ class PowerInput extends HTMLElement {
 		super();
 		this.init();
 	}
-	init() {
+	init(): void {
+		this.virtualInput.bindElement(this.element);
 		document.body.appendChild(this.element);
-		this.streambuf.pipe(new Speller());
+		//this.streambuf.pipe(new Speller());
 	}
-	handleInput(event: KeyboardEvent) {
+	handleInput(event: KeyboardEvent): void {
 		this.streambuf.push(new KeyboardInputEvent(event));
 	}
 }

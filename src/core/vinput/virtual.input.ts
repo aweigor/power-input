@@ -34,10 +34,10 @@ export class VirtualInput implements IVirtualInput {
 		return this;
 	}
 	bindElement(element: HTMLElement): void {
-		const selectionListener = new SelectionListener(element);
-		selectionListener.onChange((event: TSelectionState) => {
+		SelectionListener.bind(element, (state: TSelectionState | null) => {
+			if (state === null) return;
 			this.syncState({
-				selection: event,
+				selection: state,
 			});
 		});
 	}

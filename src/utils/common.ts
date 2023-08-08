@@ -8,3 +8,11 @@ export function isDescendantNode(parent: Node, child: Node | null): boolean {
 
 	return node !== null;
 }
+
+export function isEqualNode(one: Node, two: Node): boolean {
+	return one.isEqualNode(two);
+}
+
+export function getHtmlChildIndex(parent: HTMLElement, child: HTMLElement): number {
+	return Array.from(parent.children).indexOf(child);
+}
