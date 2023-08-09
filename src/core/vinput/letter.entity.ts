@@ -1,5 +1,5 @@
 /**
- * Represents VirtualInput token
+ * VirtualInput token
  * @param code -- keyboard code of letter
  * @param capitalized -- if letter is capitalized
  * @param next -- next Letter pointer

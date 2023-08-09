@@ -28,7 +28,9 @@ export class VirtualInput implements IVirtualInput {
 	get text(): string {
 		return '';
 	}
-	insert(letter: Letter): void {}
+	insert(letter: Letter): void {
+		console.log('insert', letter);
+	}
 	remove(): void {}
 	syncState(state: TInputState): IVirtualInput {
 		return this;
