@@ -50,7 +50,7 @@ class PowerInput extends HTMLElement {
 		document.body.appendChild(this.element);
 	}
 	handleInput(event: KeyboardEvent): void {
-		this.streambuf.push(new KeyboardInputEvent(event));
+		this.streambuf.push(new KeyboardInputEvent(event).value);
 	}
 }
 

@@ -10,26 +10,14 @@ import { TKeyboardInputEvent } from '../../types';
  *
  */
 
-export function createKeyboardInputEvent(_originalEvent: KeyboardEvent): TKeyboardInputEvent {
-	return {
-		timestamp: _originalEvent.timeStamp,
-		code: _originalEvent.charCode,
-	};
-}
-
 export class KeyboardInputEvent {
-	timestamp: number;
-	code: number;
-	shift: boolean;
 	get value(): TKeyboardInputEvent {
 		return {
 			timestamp: this._originalEvent.timeStamp,
-			code: this._originalEvent.charCode,
+			code: this._originalEvent.keyCode,
+			shift: this._originalEvent.shiftKey,
+			alt: this._originalEvent.altKey,
 		};
 	}
-	constructor(private readonly _originalEvent: KeyboardEvent) {
-		this.timestamp = _originalEvent.timeStamp;
-		this.shift = _originalEvent.shiftKey;
-		this.code = this._originalEvent.charCode; // deprecated
-	}
+	constructor(private readonly _originalEvent: KeyboardEvent) {}
 }

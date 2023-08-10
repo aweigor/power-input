@@ -9,7 +9,8 @@
 
 export class Letter {
 	code: number;
-	capitalized: boolean = false;
+	shift: boolean = false;
+	alt: boolean = false;
 	next: Letter | null = null;
 	prev: Letter | null = null;
 	constructor() {}

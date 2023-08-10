@@ -25,6 +25,8 @@ export type TSelectionState = {
 export type TKeyboardInputEvent = {
 	timestamp: number;
 	code: number;
+	shift: boolean;
+	alt: boolean;
 };
 
 export type TInputState = {

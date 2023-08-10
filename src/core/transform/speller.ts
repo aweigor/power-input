@@ -4,6 +4,7 @@
  *
  */
 
+import { TKeyboardInputEvent } from '../../types';
 import { KeyboardInputEvent } from '../events/keyboard.input.event';
 import { Letter } from '../vinput/letter.entity';
 
@@ -14,11 +15,12 @@ export class Speller extends TransformStream {
 			start(controller) {
 				console.log('starting..');
 			},
-			async transform(event: Awaited<KeyboardInputEvent>, controller) {
+			async transform(event: Awaited<TKeyboardInputEvent>, controller) {
 				event = await event;
 				const letter = new Letter();
 				letter.code = event.code;
-				letter.capitalized = event.shift;
+				letter.shift = event.shift;
+				letter.alt = event.alt;
 				controller.enqueue(letter);
 			},
 			flush() {},
