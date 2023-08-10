@@ -2,7 +2,7 @@ import ANCII_codemap from './keyboards/ancii/codemap.json';
 import ANCII_locales from './keyboards/ancii/locales.json';
 import ANCII_arrowsmap from './keyboards/ancii/special.json';
 
-enum Locales {
+export enum Locales {
 	en = 'en',
 	ru = 'ru',
 }

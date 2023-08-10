@@ -2,6 +2,7 @@ import { KeyboardInputEvent } from './core/events/keyboard.input.event';
 import { KeyboardInputStreambuf } from './core/transfer/kbin.transfer.service';
 import { Speller } from './core/transform/speller';
 import { Typographer } from './core/transform/typographer';
+import { Writer } from './core/transform/writer';
 import { VirtualInput } from './core/vinput/virtual-input';
 import { IVirtualInput } from './core/vinput/virtual-input.interface';
 import {} from './types';
@@ -48,6 +49,7 @@ class PowerInput extends HTMLElement {
 	init(): void {
 		this.virtualInput.bindElement(this.element);
 		document.body.appendChild(this.element);
+		this.streambuf.pipeTo(new Writer(this.element));
 	}
 	handleInput(event: KeyboardEvent): void {
 		this.streambuf.push(new KeyboardInputEvent(event).value);

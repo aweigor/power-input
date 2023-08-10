@@ -17,7 +17,10 @@ export class Typographer extends TransformStream {
 				const letter = await event;
 				if (!(letter instanceof Letter)) return;
 				_vInput.insert(letter);
-				controller.enqueue(_vInput.text);
+				controller.enqueue({
+					value: _vInput.text,
+					carret: 0,
+				});
 			},
 			flush(): void {},
 		});

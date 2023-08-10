@@ -1,6 +1,7 @@
 import { DoublyLinkedList, ListElement } from '../../polyfills/doublyLinkedList';
 import { IListElement } from '../../polyfills/listElement.interface';
 import { TInputState, TSelectionState } from '../../types';
+import { Locales, decode } from '../format/charcode/decode';
 import { SelectionListener } from '../selection/selection.listener';
 import { Carret } from './carret';
 import { Letter } from './letter.entity';
@@ -16,7 +17,16 @@ export class VirtualInput implements IVirtualInput {
 		return this.paragraphs[0];
 	}
 	get text(): string {
-		return '';
+		let text = '';
+		for (const line of this.paragraph) {
+			text += '\n\n';
+
+			for (const letter of line.data) {
+				text += decode(letter.data.code, letter.data.shift, letter.data.alt, Locales.en);
+			}
+		}
+
+		return text;
 	}
 	insert(letter: Letter): void {
 		const elt = new ListElement(letter);
