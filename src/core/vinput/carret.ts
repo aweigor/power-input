@@ -1,4 +1,4 @@
-import { IListElement } from '../../polyfills/list.element.interface';
+import { IListElement } from '../../polyfills/listElement.interface';
 import { TSelectionState } from '../../types';
 import { ICarret } from './carret.interface';
 import { Letter } from './letter.entity';

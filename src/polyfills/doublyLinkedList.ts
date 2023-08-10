@@ -1,9 +1,12 @@
-import { IListElement } from './list.element.interface';
+import { IListElement } from './listElement.interface';
 
 export class ListElement<Dt> implements IListElement<Dt> {
 	data: Dt;
 	next: IListElement<Dt> | null = null;
 	prev: IListElement<Dt> | null = null;
+	constructor(data: Dt) {
+		this.data = data;
+	}
 }
 
 export class DoublyLinkedList<Dt> {
@@ -14,9 +17,19 @@ export class DoublyLinkedList<Dt> {
 			this.init(element);
 		}
 	}
-	init(element: IListElement<Dt>): void {
+	init(element: IListElement<Dt>): IListElement<Dt> {
 		this.head = element;
 		this.tail = element;
+		return element;
+	}
+	get length(): number {
+		let el = this.head;
+		let result = 0;
+		while (el !== null) {
+			result += 1;
+			el = el.next;
+		}
+		return result;
 	}
 	[Symbol.iterator](): Iterator<IListElement<Dt>, null> {
 		let current = this.head;
@@ -36,6 +49,7 @@ export class DoublyLinkedList<Dt> {
 		};
 	}
 	insertAfter(item: IListElement<Dt>, index: number): IListElement<Dt> | null {
+		if (!this.head && !this.tail && index === -1) return this.init(item);
 		const element: IListElement<Dt> | null = this.find(index);
 		if (element === null) return null;
 		if (element.next === null) {
@@ -49,6 +63,7 @@ export class DoublyLinkedList<Dt> {
 	}
 
 	insertBefore(item: IListElement<Dt>, index: number): IListElement<Dt> | null {
+		if (!this.head && !this.tail && index === 0) return this.init(item);
 		const element: IListElement<Dt> | null = this.find(index);
 		if (element === null) return null;
 		if (element.prev === null) {

@@ -1,5 +1,5 @@
 import { DoublyLinkedList, ListElement } from '../../polyfills/doublyLinkedList';
-import { IListElement } from '../../polyfills/list.element.interface';
+import { IListElement } from '../../polyfills/listElement.interface';
 import { TInputState, TSelectionState } from '../../types';
 import { SelectionListener } from '../selection/selection.listener';
 import { Carret } from './carret';
@@ -8,7 +8,7 @@ import { Paragraph } from './paragraph';
 import { IVirtualInput } from './virtual-input.interface';
 
 export class VirtualInput implements IVirtualInput {
-	data: Letter[];
+	data: Letter[] = [];
 	paragraphs: Paragraph[] = [new Paragraph()];
 	carret: Carret = new Carret(this);
 	get paragraph(): Paragraph {
@@ -19,11 +19,17 @@ export class VirtualInput implements IVirtualInput {
 		return '';
 	}
 	insert(letter: Letter): void {
-		console.log('insert', letter);
+		const elt = new ListElement(letter);
+		if (this.carret.nextLine !== null) {
+			this.carret.nextLine.data.insertBefore(elt, this.carret.nextOffset);
+
+			console.log('insert', this.carret.nextLine);
+		}
 	}
 	remove(): void {}
 	syncState(state: TInputState): IVirtualInput {
 		if (state.selection !== undefined) {
+			this.paragraph.syncState(state.selection);
 			this.carret.syncState(state.selection);
 
 			console.log('sync state', state.selection, this.carret);
