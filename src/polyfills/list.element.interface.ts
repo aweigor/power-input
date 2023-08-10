@@ -1,5 +1,5 @@
-export interface IListElement {
-	next: IListElement | null;
-	prev: IListElement | null;
-	data: unknown;
+export interface IListElement<DataType> {
+	data: DataType;
+	next: IListElement<DataType> | null;
+	prev: IListElement<DataType> | null;
 }
