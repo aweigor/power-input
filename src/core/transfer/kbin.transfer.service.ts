@@ -15,11 +15,11 @@ export class EventEncoder extends TransformStream {
 	constructor() {
 		super({
 			start(controller) {
-				console.log('starting..');
+				//console.log('starting..');
 			},
 			async transform(event: any, controller) {
 				event = await event;
-				console.log('transforming');
+				//console.log('transforming');
 				controller.enqueue(event);
 			},
 			flush() {},
@@ -45,7 +45,7 @@ function getStreamSource(
 	return {
 		start(controller) {
 			listen(buffer, (event) => {
-				console.log('event received', event);
+				//console.log('event received', event);
 				controller.enqueue(event);
 			});
 		},
@@ -58,13 +58,13 @@ class KeyboardInputSink extends WritableStream {
 			// Implement the sink
 			write(chunk) {
 				return new Promise((resolve, reject) => {
-					console.log('chunk', chunk);
+					//console.log('chunk', chunk);
 					resolve();
 				});
 			},
 			close() {},
 			abort(err) {
-				console.error('Sink error:', err);
+				//console.error('Sink error:', err);
 			},
 		});
 	}

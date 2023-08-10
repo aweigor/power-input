@@ -4,7 +4,7 @@
  * In the implementation class represents text as array of tokens (letters),
  * that linked together in lists (lines), that linked together in paragraphs.
  * Carret is an element(class), that contains link to previous and next element of text.
- * Virtaul element listen (to changes) itself, or provide sync method in order to be synchronized with its original element.
+ * Virtaul element listens (to changes) itself, or provide sync method in order to be synchronized with its original element.
  *
  * @param data - Array of tokens
  * @param lines - Array of lines
@@ -21,7 +21,6 @@ import { Letter } from './letter.entity';
 
 export interface IVirtualInput {
 	data: Letter[];
-	lines: unknown[];
 	paragraphs: unknown[];
 	carret: unknown;
 	text: string;

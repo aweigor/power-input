@@ -1,28 +1,28 @@
 import { IListElement } from './list.element.interface';
 
-export class ListElement<DT> implements IListElement<DT> {
-	data: DT;
-	next: IListElement<DT> | null = null;
-	prev: IListElement<DT> | null = null;
+export class ListElement<Dt> implements IListElement<Dt> {
+	data: Dt;
+	next: IListElement<Dt> | null = null;
+	prev: IListElement<Dt> | null = null;
 }
 
-export class DoublyLinkedList<DT> {
-	head: IListElement<DT> | null = null;
-	tail: IListElement<DT> | null = null;
-	constructor(element?: IListElement<DT>) {
+export class DoublyLinkedList<Dt> {
+	head: IListElement<Dt> | null = null;
+	tail: IListElement<Dt> | null = null;
+	constructor(element?: IListElement<Dt>) {
 		if (element !== undefined) {
 			this.init(element);
 		}
 	}
-	init(element: IListElement<DT>): void {
+	init(element: IListElement<Dt>): void {
 		this.head = element;
 		this.tail = element;
 	}
-	[Symbol.iterator](): Iterator<IListElement<DT>, null> {
+	[Symbol.iterator](): Iterator<IListElement<Dt>, null> {
 		let current = this.head;
-		let value: IListElement<DT> | null = null;
+		let value: IListElement<Dt> | null = null;
 		return {
-			next: (): IteratorResult<IListElement<DT>, null> => {
+			next: (): IteratorResult<IListElement<Dt>, null> => {
 				value = current;
 				if (current !== null) {
 					current = current.next;
@@ -30,13 +30,13 @@ export class DoublyLinkedList<DT> {
 				if (value === null) {
 					return { value: null, done: true };
 				} else {
-					return { value: value as IListElement<DT>, done: false };
+					return { value: value as IListElement<Dt>, done: false };
 				}
 			},
 		};
 	}
-	insertAfter(item: IListElement<DT>, index: number): IListElement<DT> | null {
-		const element: IListElement<DT> | null = this.find(index);
+	insertAfter(item: IListElement<Dt>, index: number): IListElement<Dt> | null {
+		const element: IListElement<Dt> | null = this.find(index);
 		if (element === null) return null;
 		if (element.next === null) {
 			// element is tail
@@ -48,8 +48,8 @@ export class DoublyLinkedList<DT> {
 		return item;
 	}
 
-	insertBefore(item: IListElement<DT>, index: number): IListElement<DT> | null {
-		const element: IListElement<DT> | null = this.find(index);
+	insertBefore(item: IListElement<Dt>, index: number): IListElement<Dt> | null {
+		const element: IListElement<Dt> | null = this.find(index);
 		if (element === null) return null;
 		if (element.prev === null) {
 			//element is head
@@ -61,10 +61,10 @@ export class DoublyLinkedList<DT> {
 		return item;
 	}
 
-	find(index: number): IListElement<DT> | null {
+	find(index: number): IListElement<Dt> | null {
 		let i = 0,
-			item: IListElement<DT>,
-			res: IListElement<DT> | null = null;
+			item: IListElement<Dt>,
+			res: IListElement<Dt> | null = null;
 
 		for (item of this) {
 			if (i++ == index) {
@@ -75,7 +75,7 @@ export class DoublyLinkedList<DT> {
 		return res;
 	}
 
-	remove(index: number): IListElement<DT> | null {
+	remove(index: number): IListElement<Dt> | null {
 		const element = this.find(index);
 		if (element === null) return null;
 		if (element.next) {

@@ -1,30 +1,20 @@
+import { DoublyLinkedList, ListElement } from '../../polyfills/doublyLinkedList';
+import { IListElement } from '../../polyfills/list.element.interface';
 import { TInputState, TSelectionState } from '../../types';
 import { SelectionListener } from '../selection/selection.listener';
+import { Carret } from './carret';
 import { Letter } from './letter.entity';
+import { Paragraph } from './paragraph';
 import { IVirtualInput } from './virtual-input.interface';
-
-class Line {
-	head: Letter | null = null;
-	next: Line | null = null;
-	prev: Line | null = null;
-}
-
-class Paragraph {
-	head: Line | null = null;
-	next: Paragraph | null = null;
-	prev: Paragraph | null = null;
-}
-
-class Carret {
-	prev: Letter | null = null;
-	next: Letter | null = null;
-}
 
 export class VirtualInput implements IVirtualInput {
 	data: Letter[];
-	lines: Line[] = [];
-	paragraphs: Paragraph[] = [];
-	carret: Carret = new Carret();
+	paragraphs: Paragraph[] = [new Paragraph()];
+	carret: Carret = new Carret(this);
+	get paragraph(): Paragraph {
+		// no multiple paragraphs yet
+		return this.paragraphs[0];
+	}
 	get text(): string {
 		return '';
 	}
@@ -33,6 +23,11 @@ export class VirtualInput implements IVirtualInput {
 	}
 	remove(): void {}
 	syncState(state: TInputState): IVirtualInput {
+		if (state.selection !== undefined) {
+			this.carret.syncState(state.selection);
+
+			console.log('sync state', state.selection, this.carret);
+		}
 		return this;
 	}
 	bindElement(element: HTMLElement): void {
