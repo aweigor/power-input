@@ -2,7 +2,7 @@
  * Virtual element represents html input element's value (text), its carret,
  * in a form that later can be translated to real text.
  * In the implementation class represents text as array of tokens (letters),
- * that linked together in lists (lines), that linked together in paragraphs.
+ * that linked together in list (line).
  * Carret is an element(class), that contains link to previous and next element of text.
  * Virtaul element listens (to changes) itself, or provide sync method in order to be synchronized with its original element.
  *
@@ -22,7 +22,7 @@ import { Letter } from './letter.entity';
 export interface IVirtualInput {
 	data: Letter[];
 	paragraphs: unknown[];
-	carret: unknown;
+	caret: unknown;
 	text: string;
 	insert: (letter: Letter) => void;
 	remove: () => void;

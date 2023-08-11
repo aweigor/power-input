@@ -1,26 +1,34 @@
 import { TSelectionState } from '../../types';
 import { getHtmlChildIndex, isDescendantNode, isEqualNode } from '../../utils/common';
+import { HtmlTextParser } from '../parser/HtmlText.parser';
+
+/**
+ * Selection State
+ * Define begin and end position of selection in VISIBLE text
+ * Use HtmlTextParser, same parser as for VirtualInput
+ */
 
 export class SelectionState {
 	element: HTMLElement;
-	paragraphs: string[];
-	focusOffset: TSelectionState['focusOffset'];
-	anchorOffset: TSelectionState['anchorOffset'];
-	focusLine: TSelectionState['focusLine'];
-	anchorLine: TSelectionState['anchorLine'];
-	linesCount: TSelectionState['linesCount'];
-	nodeText: TSelectionState['nodeText'];
-	selectionType: TSelectionState['selectionType'];
+	leftOffset: number;
+	rightOffset: number;
+	nodeText: string;
+	selectionType: string;
+
+	get value(): TSelectionState {
+		return {
+			leftOffset: this.leftOffset,
+			rightOffset: this.rightOffset,
+			nodeText: this.nodeText,
+			selectionType: this.selectionType,
+		};
+	}
 
 	constructor(element: HTMLElement, selection: Selection) {
-		const selectionLineRange = this.getSelectionLineRange(element, selection);
-		this.paragraphs = element.innerText.split('\n\n');
-		this.focusOffset = selection.focusOffset;
-		this.anchorOffset = selection.anchorOffset;
-		this.focusLine = selectionLineRange[0];
-		this.anchorLine = selectionLineRange[1];
-		this.linesCount = this.paragraphs.reduce((acc, el) => el.split('\n').length + acc, 0);
-		this.nodeText = element.innerText;
+		const selectionRange = this.getSelectionLineRange(element, selection);
+		this.leftOffset = selectionRange[0];
+		this.rightOffset = selectionRange[1];
+		this.nodeText = HtmlTextParser.parse(element);
 		this.selectionType = selection.type;
 	}
 
@@ -42,28 +50,9 @@ export class SelectionState {
 				? selection.focusNode
 				: selection.focusNode.parentElement;
 
+		const textBetween = HtmlTextParser.parseBetween(element, anchorNode, focusNode);
+		console.log('textBetween', textBetween);
+
 		return [getHtmlChildIndex(element, anchorNode) + 1, getHtmlChildIndex(element, focusNode) + 1];
-	}
-
-	static instance(element: HTMLElement, selection: Selection): TSelectionState | null {
-		if (
-			selection.anchorNode === null ||
-			selection.focusNode === null ||
-			!isDescendantNode(element, selection.focusNode) ||
-			!isDescendantNode(element, selection.anchorNode)
-		)
-			return null;
-
-		const self = new SelectionState(element, selection);
-
-		return {
-			focusLine: self.focusLine,
-			focusOffset: self.focusOffset,
-			anchorLine: self.anchorLine,
-			anchorOffset: self.anchorOffset,
-			linesCount: self.linesCount,
-			nodeText: self.nodeText,
-			selectionType: self.selectionType,
-		};
 	}
 }

@@ -4,7 +4,9 @@ export class Writer extends WritableStream {
 			write(chunk) {
 				return new Promise((resolve, reject) => {
 					console.log('chunk', chunk);
-					_element.innerText = chunk.value;
+					const value = '<span>1</span><span>2</span><span>3</span><span>4</span>';
+					_element.innerHTML = value;
+					//_element.innerText = chunk.value;
 					resolve();
 				});
 			},

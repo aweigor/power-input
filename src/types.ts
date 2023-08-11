@@ -13,11 +13,8 @@ export type TSelectionChangeEventParameters = {
 };
 
 export type TSelectionState = {
-	focusOffset: number;
-	anchorOffset: number;
-	focusLine: number;
-	anchorLine: number;
-	linesCount: number;
+	leftOffset: number;
+	rightOffset: number;
 	nodeText: string;
 	selectionType: string;
 };
