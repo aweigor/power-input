@@ -1,3 +1,5 @@
+import { TRange } from '../types';
+
 export function isDescendantNode(parent: Node, child: Node | null): boolean {
 	let node: Node | null = child;
 
@@ -15,4 +17,11 @@ export function isEqualNode(one: Node, two: Node): boolean {
 
 export function getHtmlChildIndex(parent: HTMLElement, child: HTMLElement): number {
 	return Array.from(parent.children).indexOf(child);
+}
+
+export function swapRange(range: TRange): TRange {
+	const temp = range.to;
+	range.to = range.from;
+	range.from = temp;
+	return range;
 }

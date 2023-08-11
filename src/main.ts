@@ -28,8 +28,8 @@ class EventDispatcher {
 		el.addEventListener(
 			'keydown',
 			(event) => {
-				event.stopPropagation();
-				event.preventDefault();
+				//event.stopPropagation();
+				//event.preventDefault();
 
 				this._handler(event);
 			},

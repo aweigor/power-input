@@ -1,5 +1,5 @@
-import { TSelectionState } from '../../types';
-import { getHtmlChildIndex, isDescendantNode, isEqualNode } from '../../utils/common';
+import { TRange, TSelectionState } from '../../types';
+import { getHtmlChildIndex, isDescendantNode, isEqualNode, swapRange } from '../../utils/common';
 import { HtmlTextParser } from '../parser/HtmlText.parser';
 
 /**
@@ -26,8 +26,8 @@ export class SelectionState {
 
 	constructor(element: HTMLElement, selection: Selection) {
 		const selectionRange = this.getSelectionLineRange(element, selection);
-		this.leftOffset = selectionRange[0];
-		this.rightOffset = selectionRange[1];
+		this.leftOffset = selectionRange.from;
+		this.rightOffset = selectionRange.to;
 		this.nodeText = HtmlTextParser.parse(element);
 		this.selectionType = selection.type;
 	}
@@ -35,10 +35,13 @@ export class SelectionState {
 	/**
 	 * @returns number Array - 1st - focus line, 2nd - anchor line
 	 */
-	getSelectionLineRange(element: HTMLElement, selection: Selection): number[] {
-		const res = [-1, -1];
+	getSelectionLineRange(element: HTMLElement, selection: Selection): TRange {
+		const range: TRange = {
+			from: -1,
+			to: -1,
+		};
 
-		if (!selection.focusNode?.parentElement || !selection.anchorNode?.parentElement) return res;
+		if (!selection.focusNode?.parentElement || !selection.anchorNode?.parentElement) return range;
 
 		const anchorNode: HTMLElement =
 			selection.anchorNode instanceof HTMLElement
@@ -50,9 +53,14 @@ export class SelectionState {
 				? selection.focusNode
 				: selection.focusNode.parentElement;
 
-		const textBetween = HtmlTextParser.parseBetween(element, anchorNode, focusNode);
-		console.log('textBetween', textBetween);
+		const textToAnchor = HtmlTextParser.parseTo(element, anchorNode);
+		const textToFocus = HtmlTextParser.parseTo(element, focusNode);
 
-		return [getHtmlChildIndex(element, anchorNode) + 1, getHtmlChildIndex(element, focusNode) + 1];
+		range.from = textToAnchor.length + selection.anchorOffset;
+		range.to = textToFocus.length + selection.focusOffset;
+
+		if (range.from > range.to) swapRange(range);
+
+		return range;
 	}
 }

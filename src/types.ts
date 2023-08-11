@@ -30,3 +30,5 @@ export type TInputState = {
 	value?: string;
 	selection?: TSelectionState;
 };
+
+export type TRange = { from: number; to: number };
