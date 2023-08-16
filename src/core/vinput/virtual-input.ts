@@ -19,12 +19,38 @@ export class VirtualInput implements IVirtualInput {
 	get text(): string {
 		let text = '';
 		for (const letter of this.paragraph) {
-			text += '\n\n';
+			console.log(decode(letter.data.code, letter.data.alt, letter.data.shift, Locales.en));
+			text += decode(letter.data.code, letter.data.alt, letter.data.shift, Locales.en);
 		}
 
 		return text;
 	}
-	insert(letter: Letter): void {}
+	insert(letter: Letter): void {
+		if (this.caret.next === null && this.caret.prev === null) {
+			const item = this.paragraph.init(letter);
+			this.caret.next = item;
+		} else if (this.caret.prev && this.caret.next) {
+			const item = this.paragraph.insertAfter(letter, this.paragraph.findIndex(this.caret.prev));
+			if (item !== null) {
+				this.caret.prev.next = item;
+				this.caret.next.prev = item;
+				item.next = this.caret.next;
+				this.caret.next = item;
+			}
+		} else if (this.caret.prev !== null) {
+			const item = this.paragraph.insertAfter(letter, this.paragraph.length);
+			if (item !== null) {
+				this.caret.prev.next = item;
+				this.caret.next = item;
+			}
+		} else if (this.caret.next !== null) {
+			const item = this.paragraph.insertBefore(letter, 0);
+			if (item !== null) {
+				this.caret.next.prev = item;
+				this.caret.next = item;
+			}
+		}
+	}
 	remove(): void {}
 	syncState(state: TInputState): IVirtualInput {
 		if (state.selection !== undefined) {

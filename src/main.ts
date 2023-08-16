@@ -28,8 +28,8 @@ class EventDispatcher {
 		el.addEventListener(
 			'keydown',
 			(event) => {
-				//event.stopPropagation();
-				//event.preventDefault();
+				event.stopPropagation();
+				event.preventDefault();
 
 				this._handler(event);
 			},
@@ -40,7 +40,7 @@ class EventDispatcher {
 
 class PowerInput extends HTMLElement {
 	element: HTMLDivElement = createElement(new EventDispatcher(this.handleInput.bind(this)));
-	virtualInput: IVirtualInput = new VirtualInput();
+	virtualInput: VirtualInput = new VirtualInput();
 	streambuf = new KeyboardInputStreambuf([new Speller(), new Typographer(this.virtualInput)]);
 	constructor() {
 		super();

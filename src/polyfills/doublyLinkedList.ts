@@ -12,15 +12,16 @@ export class ListElement<Dt> implements IListElement<Dt> {
 export class DoublyLinkedList<Dt> {
 	head: IListElement<Dt> | null = null;
 	tail: IListElement<Dt> | null = null;
-	constructor(element?: IListElement<Dt>) {
-		if (element !== undefined) {
-			this.init(element);
+	constructor(data?: Dt) {
+		if (data !== undefined) {
+			this.init(data);
 		}
 	}
-	init(element: IListElement<Dt>): IListElement<Dt> {
-		this.head = element;
-		this.tail = element;
-		return element;
+	init(data: Dt): IListElement<Dt> {
+		const item = new ListElement(data);
+		this.head = item;
+		this.tail = item;
+		return item;
 	}
 	get length(): number {
 		let el = this.head;
@@ -48,8 +49,9 @@ export class DoublyLinkedList<Dt> {
 			},
 		};
 	}
-	insertAfter(item: IListElement<Dt>, index: number): IListElement<Dt> | null {
-		if (!this.head && !this.tail && index === -1) return this.init(item);
+	insertAfter(data: Dt, index: number): IListElement<Dt> | null {
+		if (!this.head && !this.tail && index === -1) return this.init(data);
+		const item = new ListElement(data);
 		const element: IListElement<Dt> | null = this.find(index);
 		if (element === null) return null;
 		if (element.next === null) {
@@ -62,8 +64,9 @@ export class DoublyLinkedList<Dt> {
 		return item;
 	}
 
-	insertBefore(item: IListElement<Dt>, index: number): IListElement<Dt> | null {
-		if (!this.head && !this.tail && index === 0) return this.init(item);
+	insertBefore(data: Dt, index: number): IListElement<Dt> | null {
+		if (!this.head && !this.tail && index === 0) return this.init(data);
+		const item = new ListElement(data);
 		const element: IListElement<Dt> | null = this.find(index);
 		if (element === null) return null;
 		if (element.prev === null) {
@@ -88,6 +91,15 @@ export class DoublyLinkedList<Dt> {
 			}
 		}
 		return res;
+	}
+
+	findIndex(element: IListElement<Dt>): number {
+		let index = -1;
+		for (const item of this) {
+			index++;
+			if (item === element) break;
+		}
+		return index;
 	}
 
 	remove(index: number): IListElement<Dt> | null {

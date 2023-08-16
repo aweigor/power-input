@@ -7,7 +7,6 @@ export class HtmlTextParser {
 	}
 	static parseBetween(element: HTMLElement, from: HTMLElement, to: HTMLElement): string | null {
 		const children = Array.from(element.children);
-
 		const range = {
 			from: children.indexOf(from),
 			to: children.indexOf(to),
@@ -30,9 +29,7 @@ export class HtmlTextParser {
 		const elementCopy = element.cloneNode(true) as HTMLElement;
 		const elementChildren = Array.from(element.children);
 		const copyChildren = Array.from(elementCopy.children);
-		const indexTo = elementChildren.indexOf(to);
-		const removeSlice = copyChildren.slice(indexTo, -1);
-		for (const elt of removeSlice) {
+		for (const elt of copyChildren.slice(elementChildren.indexOf(to), -1)) {
 			elementCopy.removeChild(elt);
 		}
 		return elementCopy.innerText;

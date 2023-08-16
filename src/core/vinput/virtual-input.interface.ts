@@ -22,6 +22,7 @@ import { Letter } from './letter.entity';
 export interface IVirtualInput {
 	data: Letter[];
 	paragraphs: unknown[];
+	paragraph: unknown;
 	caret: unknown;
 	text: string;
 	insert: (letter: Letter) => void;

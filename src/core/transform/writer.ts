@@ -3,10 +3,19 @@ export class Writer extends WritableStream {
 		super({
 			write(chunk) {
 				return new Promise((resolve, reject) => {
-					console.log('chunk', chunk);
-					const value = '<span>1</span><span>2</span><span>3</span><span>4</span>';
-					//_element.innerHTML = value;
-					//_element.innerText = chunk.value;
+					_element.innerHTML = chunk.text;
+
+					const range = document.createRange();
+					const sel = window.getSelection();
+
+					if (sel !== null) {
+						sel.removeAllRanges();
+						sel.addRange(range);
+					}
+
+					range.setStart(_element, 1);
+					range.collapse(true);
+
 					resolve();
 				});
 			},
