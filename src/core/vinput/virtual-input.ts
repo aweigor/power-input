@@ -38,7 +38,7 @@ export class VirtualInput implements IVirtualInput {
 				this.caret.next = item;
 			}
 		} else if (this.caret.prev !== null) {
-			const item = this.paragraph.insertAfter(letter, this.paragraph.length);
+			const item = this.paragraph.insertAfter(letter, this.paragraph.length - 1);
 			if (item !== null) {
 				this.caret.prev.next = item;
 				this.caret.next = item;
@@ -55,8 +55,6 @@ export class VirtualInput implements IVirtualInput {
 	syncState(state: TInputState): IVirtualInput {
 		if (state.selection !== undefined) {
 			this.caret.syncState(state.selection);
-
-			console.log('sync state', state.selection, this.caret);
 		}
 		return this;
 	}

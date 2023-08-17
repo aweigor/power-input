@@ -85,6 +85,7 @@ export class DoublyLinkedList<Dt> {
 			res: IListElement<Dt> | null = null;
 
 		for (item of this) {
+			console.log('find', item)
 			if (i++ == index) {
 				res = item;
 				break;

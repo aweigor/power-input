@@ -4,17 +4,16 @@ export class Writer extends WritableStream {
 			write(chunk) {
 				return new Promise((resolve, reject) => {
 					_element.innerHTML = chunk.text;
-
+					
 					const range = document.createRange();
 					const sel = window.getSelection();
+
+					range.setStart(_element.childNodes[0], chunk.text.length);
 
 					if (sel !== null) {
 						sel.removeAllRanges();
 						sel.addRange(range);
 					}
-
-					range.setStart(_element, 1);
-					range.collapse(true);
 
 					resolve();
 				});

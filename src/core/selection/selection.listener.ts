@@ -27,7 +27,6 @@ export class SelectionListener {
 
 	init(): SelectionListener {
 		document.addEventListener('selectionchange', () => {
-			console.log('selection changed', this.selection);
 			if (this.selection !== null) {
 				this._handler((this.state = new SelectionState(this._element, this.selection).value));
 			}

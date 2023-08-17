@@ -26,6 +26,7 @@ export class HtmlTextParser {
 		return parseElement.innerText;
 	}
 	static parseTo(element: HTMLElement, to: HTMLElement): string {
+		if (element.isEqualNode(to)) return '';
 		const elementCopy = element.cloneNode(true) as HTMLElement;
 		const elementChildren = Array.from(element.children);
 		const copyChildren = Array.from(elementCopy.children);

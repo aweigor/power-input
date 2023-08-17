@@ -10,6 +10,8 @@ export class Caret {
 	constructor(private readonly _ctx: VirtualInput) {}
 
 	syncState(selection: TSelectionState): Caret {
+		this.prev = this._ctx.paragraph.find(selection.leftOffset - 1);
+		this.next = this._ctx.paragraph.find(selection.rightOffset);
 		return this;
 	}
 }
