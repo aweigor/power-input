@@ -32,3 +32,13 @@ export type TInputState = {
 };
 
 export type TRange = { from: number; to: number };
+
+export enum LetterTypes {
+	SYMB,
+	CTRL,
+	UNKNOWN,
+}
+
+export enum CommandTypes {
+	BACKSPACE = 8,
+}

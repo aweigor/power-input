@@ -1,6 +1,7 @@
 import ANCII_codemap from './keyboards/ancii/codemap.json';
 import ANCII_locales from './keyboards/ancii/locales.json';
 import ANCII_arrowsmap from './keyboards/ancii/special.json';
+import { LetterTypes } from '../../../types';
 
 export enum Locales {
 	en = 'en',
@@ -13,10 +14,11 @@ export type TLocaleKeys = {
 	shift: (string | number)[];
 };
 
-export function defineType(charCode: number): string | undefined {
+export function defineType(charCode: number): LetterTypes {
 	const codemap: number[] = ANCII_codemap;
-	if (codemap.includes(charCode)) return 'symbol';
-	if (Object.keys(ANCII_arrowsmap).includes(charCode.toString())) return 'control';
+	if (codemap.includes(charCode)) return LetterTypes.SYMB;
+	if (Object.keys(ANCII_arrowsmap).includes(charCode.toString())) return LetterTypes.CTRL;
+	return LetterTypes.UNKNOWN;
 }
 
 export function decode(

@@ -5,6 +5,7 @@
  * Writes Input's result value to stream
  */
 
+import { LetterTypes } from '../../types';
 import { Letter } from '../vinput/letter.entity';
 import { VirtualInput } from '../vinput/virtual-input';
 import { IVirtualInput } from '../vinput/virtual-input.interface';
@@ -17,15 +18,19 @@ export class Typographer extends TransformStream {
 			async transform(event: Awaited<Letter>, controller): Promise<void> {
 				const letter = await event;
 				if (!(letter instanceof Letter)) return;
-				_vInput.insert(letter);
-				let caretPos = -1;
-				if (_vInput.caret.prev) {
-					caretPos = _vInput.paragraph.findIndex(_vInput.caret.prev);
+				if (letter.type === LetterTypes.SYMB) {
+					_vInput.insertSymbol(letter);
+					controller.enqueue({
+						text: _vInput.text,
+						caret: _vInput.paragraph.caretPosition,
+					});
+				} else if (letter.type === LetterTypes.CTRL) {
+					_vInput.runCommand(letter);
+					controller.enqueue({
+						text: _vInput.text,
+						caret: _vInput.paragraph.caretPosition,
+					});
 				}
-				controller.enqueue({
-					text: _vInput.text,
-					caret: caretPos,
-				});
 			},
 			flush(): void {},
 		});

@@ -85,7 +85,6 @@ export class DoublyLinkedList<Dt> {
 			res: IListElement<Dt> | null = null;
 
 		for (item of this) {
-			console.log('find', item)
 			if (i++ == index) {
 				res = item;
 				break;
@@ -97,7 +96,7 @@ export class DoublyLinkedList<Dt> {
 	findIndex(element: IListElement<Dt>): number {
 		let index = -1;
 		for (const item of this) {
-			index++;
+			++index;
 			if (item === element) break;
 		}
 		return index;

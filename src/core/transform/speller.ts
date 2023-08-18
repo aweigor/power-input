@@ -6,6 +6,7 @@
 
 import { TKeyboardInputEvent } from '../../types';
 import { KeyboardInputEvent } from '../events/keyboard.input.event';
+import { defineType } from '../format/charcode/decode';
 import { Letter } from '../vinput/letter.entity';
 
 export class Speller extends TransformStream {
@@ -21,6 +22,7 @@ export class Speller extends TransformStream {
 				letter.code = event.code;
 				letter.shift = event.shift;
 				letter.alt = event.alt;
+				letter.type = defineType(event.code);
 				controller.enqueue(letter);
 			},
 			flush() {},
