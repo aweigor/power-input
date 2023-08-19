@@ -1,3 +1,10 @@
+/**
+ * Structured text storing
+ * Always one line
+ * Before syncing state need to parse text as if it be one line
+ *
+ */
+
 import { DoublyLinkedList, ListElement } from '../../polyfills/doublyLinkedList';
 import { IListElement } from '../../polyfills/listElement.interface';
 import { TSelectionState } from '../../types';
