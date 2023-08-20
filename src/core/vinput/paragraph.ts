@@ -1,7 +1,7 @@
 /**
- * Structured text storing
- * Always one line
- * Before syncing state need to parse text as if it be one line
+ * DLL-structured text store
+ * Before syncing state need to parse text as one line
+ * Caret indicates range of selection
  *
  */
 
