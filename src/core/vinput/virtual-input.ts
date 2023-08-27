@@ -36,6 +36,9 @@ export class VirtualInput implements IVirtualInput {
 		if (state.selection !== undefined) {
 			this.paragraph.syncState(state.selection);
 		}
+		if (state.value !== undefined) {
+			console.log('state sync', state.value);
+		}
 		return this;
 	}
 	bindElement(element: HTMLElement): void {

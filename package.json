@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "custom-elements-es5-adapter": "^1.0.0",
+    "highlight.js": "^11.8.0",
     "lit": "^2.7.5"
   },
   "devDependencies": {
