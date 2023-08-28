@@ -30,7 +30,7 @@ export class HtmlTextParser {
 		const elementCopy = element.cloneNode(true) as HTMLElement;
 		const elementChildren = Array.from(element.children);
 		const copyChildren = Array.from(elementCopy.children);
-		for (const elt of copyChildren.slice(elementChildren.indexOf(to), -1)) {
+		for (const elt of copyChildren.slice(elementChildren.indexOf(to))) {
 			elementCopy.removeChild(elt);
 		}
 		return elementCopy.innerText;

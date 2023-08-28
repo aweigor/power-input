@@ -56,6 +56,8 @@ export class Writer extends WritableStream {
 						sel.addRange(range);
 					}
 
+					onWriteEnd(_element.innerText);
+
 					resolve();
 				});
 			},

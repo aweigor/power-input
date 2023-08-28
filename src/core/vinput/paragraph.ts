@@ -35,6 +35,7 @@ export class Paragraph extends DoublyLinkedList<Letter> {
 		return -1;
 	}
 	syncState(selection: TSelectionState): Paragraph {
+		//console.log('sync state', selection);
 		this.caret.prev = selection.leftOffset - 1;
 		this.caret.next = selection.rightOffset;
 		this.caret.type = 'Caret';
