@@ -21,25 +21,37 @@ export function defineType(charCode: number): LetterTypes {
 	return LetterTypes.UNKNOWN;
 }
 
+const specialKeys = {
+	space: ' ',
+	enter: '\n',
+};
+
 export function decode(
 	charCode: number,
+	type: number,
 	altKey: boolean = false,
 	shiftKey: boolean = false,
-	locale: Locales,
+	locale: Locales = Locales.en,
 ): string | number | undefined {
 	let result: string | number | undefined = undefined;
 
-	const keyCodes: TLocaleKeys | undefined = ANCII_locales[locale];
-	const keyIndex = ANCII_codemap.indexOf(charCode);
+	console.log('decode', charCode, type);
 
-	if (!keyCodes || isNaN(keyIndex)) return;
+	if (type === LetterTypes.CTRL) {
+		result = specialKeys[ANCII_arrowsmap[charCode]];
+	} else if (type === LetterTypes.SYMB) {
+		const localeKeys: TLocaleKeys | undefined = ANCII_locales[locale];
+		const keyIndex = ANCII_codemap.indexOf(charCode);
 
-	if (altKey === false && shiftKey === false) {
-		result = keyCodes['default'][keyIndex];
-	} else if (altKey === true) {
-		result = keyCodes['alt'][keyIndex];
-	} else if (shiftKey === true) {
-		result = keyCodes['shift'][keyIndex];
+		if (!localeKeys || isNaN(keyIndex)) return;
+
+		if (altKey === false && shiftKey === false) {
+			result = localeKeys['default'][keyIndex];
+		} else if (altKey === true) {
+			result = localeKeys['alt'][keyIndex];
+		} else if (shiftKey === true) {
+			result = localeKeys['shift'][keyIndex];
+		}
 	}
 
 	return result;

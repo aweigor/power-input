@@ -41,4 +41,6 @@ export enum LetterTypes {
 
 export enum CommandTypes {
 	BACKSPACE = 8,
+	SPACE = 32,
+	ENTER = 13,
 }

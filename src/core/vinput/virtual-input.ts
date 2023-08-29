@@ -14,7 +14,16 @@ export class VirtualInput implements IVirtualInput {
 		let text = '';
 
 		for (const letter of this.paragraph) {
-			text += decode(letter.data.code, letter.data.alt, letter.data.shift, Locales.en);
+			console.log('decode', text);
+			text += decode(
+				letter.data.code,
+				letter.data.type,
+				letter.data.alt,
+				letter.data.shift,
+				Locales.en,
+			);
+
+			console.log('decode', text);
 		}
 
 		return text;
@@ -26,6 +35,14 @@ export class VirtualInput implements IVirtualInput {
 		switch (CommandTypes[letter.code]) {
 			case 'BACKSPACE': {
 				this.paragraph.removePrev();
+				break;
+			}
+			case 'SPACE': {
+				this.insertSymbol(letter);
+				break;
+			}
+			case 'ENTER': {
+				this.insertSymbol(letter);
 				break;
 			}
 			default:
