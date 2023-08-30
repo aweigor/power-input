@@ -1,4 +1,10 @@
-export function getFocusNode(caret: number, root: HTMLElement): Node | null {
+export function getFocusNode(
+	caret: number,
+	root: HTMLElement,
+): {
+	focusNode: Node | null;
+	nodeCaret: number;
+} {
 	// Result of Finding Focus Node is Node, which text content belongs to caret's index in continous text of root element
 	let focusNode: Node | null = null;
 	let contentLength = 0;
@@ -15,7 +21,10 @@ export function getFocusNode(caret: number, root: HTMLElement): Node | null {
 			caret -= contentLength;
 		}
 	}
-	return focusNode;
+	return {
+		focusNode,
+		nodeCaret: caret,
+	};
 
 	function* traverseNodes(root): IterableIterator<Node> {
 		function* t(node): IterableIterator<Node> {
@@ -33,6 +42,7 @@ export function getFocusNode(caret: number, root: HTMLElement): Node | null {
 		}
 	}
 }
+
 export class Writer extends WritableStream {
 	constructor(
 		private readonly _element: HTMLElement,
@@ -46,14 +56,14 @@ export class Writer extends WritableStream {
 					const range = document.createRange();
 					const sel = window.getSelection();
 
-					let offsetNode;
-					if ((offsetNode = getFocusNode(chunk.caret + 1, _element)) !== null) {
-						range.setStart(offsetNode, chunk.caret + 1);
-					}
+					const { focusNode, nodeCaret } = getFocusNode(chunk.caret + 1, _element);
+					if (focusNode !== null) {
+						range.setStart(focusNode, nodeCaret);
 
-					if (sel !== null) {
-						sel.removeAllRanges();
-						sel.addRange(range);
+						if (sel !== null) {
+							sel.removeAllRanges();
+							sel.addRange(range);
+						}
 					}
 
 					onWriteEnd(_element.innerText);

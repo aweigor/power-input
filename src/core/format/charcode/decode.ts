@@ -35,8 +35,6 @@ export function decode(
 ): string | number | undefined {
 	let result: string | number | undefined = undefined;
 
-	console.log('decode', charCode, type);
-
 	if (type === LetterTypes.CTRL) {
 		result = specialKeys[ANCII_arrowsmap[charCode]];
 	} else if (type === LetterTypes.SYMB) {

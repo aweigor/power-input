@@ -59,8 +59,6 @@ export class SelectionState {
 		range.from = textToAnchor.length + selection.anchorOffset;
 		range.to = textToFocus.length + selection.focusOffset;
 
-		console.log('get selection range', range, textToAnchor, textToFocus);
-
 		if (range.from > range.to) swapRange(range);
 
 		return range;

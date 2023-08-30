@@ -14,7 +14,6 @@ export class VirtualInput implements IVirtualInput {
 		let text = '';
 
 		for (const letter of this.paragraph) {
-			console.log('decode', text);
 			text += decode(
 				letter.data.code,
 				letter.data.type,
@@ -23,7 +22,11 @@ export class VirtualInput implements IVirtualInput {
 				Locales.en,
 			);
 
-			console.log('decode', text);
+			console.log(
+				'decoded',
+				text,
+				decode(letter.data.code, letter.data.type, letter.data.alt, letter.data.shift, Locales.en),
+			);
 		}
 
 		return text;
@@ -54,7 +57,7 @@ export class VirtualInput implements IVirtualInput {
 			this.paragraph.syncState(state.selection);
 		}
 		if (state.value !== undefined) {
-			console.log('state sync', state.value);
+			//console.log('state sync', state.value);
 		}
 		return this;
 	}
