@@ -25,9 +25,12 @@ export class SelectionState {
 	}
 
 	constructor(element: HTMLElement, selection: Selection) {
-		const selectionRange = this.getSelectionLineRange(element, selection);
-		this.leftOffset = selectionRange.from;
-		this.rightOffset = selectionRange.to;
+		const selectionRange = getTextSelection(element, selection);
+
+		console.log('selectionRange', selectionRange);
+
+		this.leftOffset = selectionRange.start;
+		this.rightOffset = selectionRange.end;
 		this.nodeText = HtmlTextParser.parse(element);
 		this.selectionType = selection.type;
 	}
@@ -56,6 +59,16 @@ export class SelectionState {
 		const textToAnchor = HtmlTextParser.parseTo(element, anchorNode);
 		const textToFocus = HtmlTextParser.parseTo(element, focusNode);
 
+		console.log(
+			'getSelectionLineRange',
+			textToAnchor,
+			textToFocus,
+			selection.anchorOffset,
+			selection.focusOffset,
+			anchorNode,
+			focusNode,
+		);
+
 		range.from = textToAnchor.length + selection.anchorOffset;
 		range.to = textToFocus.length + selection.focusOffset;
 
@@ -64,3 +77,54 @@ export class SelectionState {
 		return range;
 	}
 }
+
+export type TTextSelection = {
+	start: number;
+	end: number;
+};
+
+/**
+ * Stolen from: https://stackoverflow.com/questions/4811822/get-a-ranges-start-and-end-offsets-relative-to-its-parent-container
+ * Candor's approach of getting offset
+ *
+ * @param editor
+ *
+ */
+export const getTextSelection = function (
+	editor: HTMLElement,
+	selection: Selection,
+): TTextSelection {
+	const range = selection.getRangeAt(0);
+
+	return {
+		start: getTextLength(editor, range.startContainer, range.startOffset),
+		end: getTextLength(editor, range.endContainer, range.endOffset),
+	};
+};
+
+const getTextLength = function (parent, node, offset) {
+	let textLength = 0;
+
+	if (node.nodeName == '#text') textLength += offset;
+	else for (let i = 0; i < offset; i++) textLength += getNodeTextLength(node.childNodes[i]);
+
+	if (node != parent) textLength += getTextLength(parent, node.parentNode, getNodeOffset(node));
+
+	return textLength;
+};
+
+const getNodeTextLength = function (node) {
+	let textLength = 0;
+
+	if (node.nodeName == 'BR') textLength = 1;
+	else if (node.nodeName == '#text') textLength = node.nodeValue.length;
+	else if (node.childNodes != null)
+		for (let i = 0; i < node.childNodes.length; i++)
+			textLength += getNodeTextLength(node.childNodes[i]);
+
+	return textLength;
+};
+
+const getNodeOffset = function (node) {
+	return node == null ? -1 : 1 + getNodeOffset(node.previousSibling);
+};

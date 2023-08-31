@@ -18,7 +18,10 @@ function createElement(dispatcher: EventDispatcher): HTMLDivElement {
 
 	el.appendChild(ch);
 
-	ch.setAttribute('style', 'background: red; ');
+	ch.setAttribute(
+		'style',
+		'background: red; white-space-collapse: preserve; white-space: -moz-pre-space;',
+	);
 	ch.setAttribute('contenteditable', 'true');
 	ch.setAttribute('tabIndex', '0');
 
@@ -98,6 +101,7 @@ export class Highlighter extends TransformStream {
 	}
 }
 
+//PowerInput.prototype.processors = [new Highlighter()];
 PowerInput.prototype.processors = [new Highlighter()];
 
 customElements.define('power-input', PowerInput);
