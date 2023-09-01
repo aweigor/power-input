@@ -21,12 +21,6 @@ export class VirtualInput implements IVirtualInput {
 				letter.data.shift,
 				Locales.en,
 			);
-
-			console.log(
-				'decoded',
-				text,
-				decode(letter.data.code, letter.data.type, letter.data.alt, letter.data.shift, Locales.en),
-			);
 		}
 
 		return text;
@@ -46,6 +40,20 @@ export class VirtualInput implements IVirtualInput {
 			}
 			case 'ENTER': {
 				this.insertSymbol(letter);
+				break;
+			}
+			case 'LEFT': {
+				this.paragraph.setCaretPosition(this.paragraph.caret.prev);
+				break;
+			}
+			case 'RIGHT': {
+				this.paragraph.setCaretPosition(this.paragraph.caret.next + 1);
+				break;
+			}
+			case 'TOP': {
+				break;
+			}
+			case 'BOTTOM': {
 				break;
 			}
 			default:

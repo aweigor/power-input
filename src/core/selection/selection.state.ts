@@ -26,9 +26,6 @@ export class SelectionState {
 
 	constructor(element: HTMLElement, selection: Selection) {
 		const selectionRange = getTextSelection(element, selection);
-
-		console.log('selectionRange', selectionRange);
-
 		this.leftOffset = selectionRange.start;
 		this.rightOffset = selectionRange.end;
 		this.nodeText = HtmlTextParser.parse(element);
@@ -59,16 +56,6 @@ export class SelectionState {
 		const textToAnchor = HtmlTextParser.parseTo(element, anchorNode);
 		const textToFocus = HtmlTextParser.parseTo(element, focusNode);
 
-		console.log(
-			'getSelectionLineRange',
-			textToAnchor,
-			textToFocus,
-			selection.anchorOffset,
-			selection.focusOffset,
-			anchorNode,
-			focusNode,
-		);
-
 		range.from = textToAnchor.length + selection.anchorOffset;
 		range.to = textToFocus.length + selection.focusOffset;
 
@@ -85,9 +72,10 @@ export type TTextSelection = {
 
 /**
  * Stolen from: https://stackoverflow.com/questions/4811822/get-a-ranges-start-and-end-offsets-relative-to-its-parent-container
- * Candor's approach of getting offset
+ * Candor's algorythm
  *
  * @param editor
+ * @param selection
  *
  */
 export const getTextSelection = function (

@@ -56,7 +56,7 @@ export class Writer extends WritableStream {
 					const range = document.createRange();
 					const sel = window.getSelection();
 
-					const { focusNode, nodeCaret } = getFocusNode(chunk.caret + 1, _element);
+					const { focusNode, nodeCaret } = getFocusNode(chunk.caret, _element);
 					if (focusNode !== null) {
 						range.setStart(focusNode, nodeCaret);
 

@@ -41,6 +41,11 @@ export class Paragraph extends DoublyLinkedList<Letter> {
 		this.caret.type = 'Caret';
 		return this;
 	}
+	setCaretPosition(index: number): void {
+		if (index < 0) index = 0;
+		this.caret.prev = index - 1;
+		this.caret.next = index;
+	}
 	/***
 	 * Collapsing selected area
 	 * Removes every symbols between left and right bounds of selection
@@ -50,20 +55,24 @@ export class Paragraph extends DoublyLinkedList<Letter> {
 	collapse(): void {}
 
 	insertNext(letter: Letter): void {
+		let inserted: IListElement<Letter> | null = null;
 		if (this.caretPrev === null && this.caretNext === null) {
 			if (this.length !== 0) {
-				this.insertAfter(letter, this.length - 1);
-				this.caret.next = this.length;
-				this.caret.prev = this.length - 1;
+				inserted = this.insertAfter(letter, this.length - 1);
 			} else {
-				this.init(letter);
+				inserted = this.init(letter);
 			}
 		} else if (this.caretPrev !== null && this.caretNext !== null) {
-			this.insertAfter(letter, this.caret.prev);
+			inserted = this.insertAfter(letter, this.caret.prev);
 		} else if (this.caretPrev !== null) {
-			this.insertAfter(letter, this.length - 1);
+			inserted = this.insertAfter(letter, this.length - 1);
 		} else if (this.caretNext !== null) {
-			this.insertBefore(letter, 0);
+			inserted = this.insertBefore(letter, 0);
+		}
+		if (inserted !== null) {
+			const insIndex = this.findIndex(inserted);
+			this.caret.next = insIndex + 1;
+			this.caret.prev = insIndex;
 		}
 	}
 
@@ -79,7 +88,7 @@ export class Paragraph extends DoublyLinkedList<Letter> {
 					this.caret.next = -1;
 				}
 				if (prev) {
-					this.caret.prev = this.findIndex(prev) - 1;
+					this.caret.prev = this.findIndex(prev);
 				} else {
 					this.caret.prev = -1;
 				}

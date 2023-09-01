@@ -117,6 +117,8 @@ export class DoublyLinkedList<Dt> {
 		if (this.head === element) {
 			this.head = null;
 		}
+		element.next = null;
+		element.prev = null;
 		return element;
 	}
 }
